@@ -332,11 +332,10 @@ if __name__ == '__main__':
             args.num_classes = len(data.y.unique())
             data.y = data.y - data.y.min()
         if not hasattr(data, 'n_x'):
-            data.n_x = torch.tensor([data.x.shape[0]])
+            data.n_x = data.x.shape[0]
         if not hasattr(data, 'num_hyperedges'):
             # note that we assume the he_id is consecutive.
-            data.num_hyperedges = torch.tensor(
-                [data.edge_index[0].max()-data.n_x[0]+1])
+            data.num_hyperedges = (data.edge_index[0].max()).item()-data.n_x+1
     
     # ipdb.set_trace()
     #     Preprocessing
@@ -440,8 +439,7 @@ if __name__ == '__main__':
         args.UniGNN_degE = args.UniGNN_degE.to(device)
     
     num_params = count_parameters(model)
-    
-    
+
     # # Part 3: Main. Training + Evaluation
     
     
@@ -504,7 +502,7 @@ if __name__ == '__main__':
     avg_time, std_time = np.mean(runtime_list), np.std(runtime_list)
 
     best_val, best_test = logger.print_statistics()
-    res_root = 'hyperparameter_tunning'
+    res_root = 'hyperparameter_tuning'
     if not osp.isdir(res_root):
         os.makedirs(res_root)
 

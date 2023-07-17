@@ -39,11 +39,11 @@ def expand_edge_index(data, edge_th=0):
     and repeated for every hyperedge.
     '''
     edge_index = data.edge_index
-    num_nodes = data.n_x[0].item()
+    num_nodes = data.n_x
     if hasattr(data, 'totedges'):
         num_edges = data.totedges
     else:
-        num_edges = data.num_hyperedges[0]
+        num_edges = data.num_hyperedges
 
     expanded_n2he_index = []
 #     n2he_with_same_heid = []
@@ -207,7 +207,7 @@ def ConstructH_HNHN(data):
     Construct incidence matrix H of size (num_nodes, num_hyperedges) from edge_index = [V;E]
     """
     edge_index = np.array(data.edge_index)
-    num_nodes = data.n_x[0]
+    num_nodes = data.n_x
     num_hyperedges = int(data.totedges)
     H = np.zeros((num_nodes, num_hyperedges))
     cur_idx = 0
@@ -307,7 +307,7 @@ def generate_norm_HNHN(H, data, args):
     # the degree of the hyperedge
     DE = np.sum(H, axis=0)
 
-    num_nodes = data.n_x[0]
+    num_nodes = data.n_x
     num_hyperedges = int(data.totedges)
     # alpha part
     D_e_alpha = DE ** alpha
@@ -397,9 +397,9 @@ def ExtractV2E(data):
     _, sorted_idx = torch.sort(edge_index[0])
     edge_index = edge_index[:, sorted_idx].type(torch.LongTensor)
 
-    num_nodes = data.n_x[0]
-    num_hyperedges = data.num_hyperedges[0]
-    if not ((data.n_x[0]+data.num_hyperedges[0]-1) == data.edge_index[0].max().item()):
+    num_nodes = data.n_x
+    num_hyperedges = data.num_hyperedges
+    if not ((data.n_x+data.num_hyperedges-1) == data.edge_index[0].max().item()):
         print('num_hyperedges does not match! 1')
         return
     cidx = torch.where(edge_index[0] == num_nodes)[
@@ -412,10 +412,10 @@ def Add_Self_Loops(data):
     # update so we dont jump on some indices
     # Assume edge_index = [V;E]. If not, use ExtractV2E()
     edge_index = data.edge_index
-    num_nodes = data.n_x[0]
-    num_hyperedges = data.num_hyperedges[0]
+    num_nodes = data.n_x
+    num_hyperedges = data.num_hyperedges
 
-    if not ((data.n_x[0] + data.num_hyperedges[0] - 1) == data.edge_index[1].max().item()):
+    if not ((data.n_x + data.num_hyperedges - 1) == data.edge_index[1].max().item()):
         print('num_hyperedges does not match! 2')
         return
 

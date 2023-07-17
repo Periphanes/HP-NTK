@@ -78,7 +78,8 @@ class dataset_Hypergraph(InMemoryDataset):
         
         
         self.data, self.slices = torch.load(self.processed_paths[0])
-        self.train_percent = self.data.train_percent.item()
+        # self.train_percent = self.data.train_percent.item()
+        self.train_percent = self.data.train_percent
         
     # @property
     # def raw_dir(self):

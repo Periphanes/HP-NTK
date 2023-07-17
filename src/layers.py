@@ -250,6 +250,12 @@ class HNHNConv(MessagePassing):
 
         self.reset_parameters()
 
+        # print("In Channels : ", in_channels)
+        # print("Hidden Channels : ", hidden_channels)
+        # print("Out Channels : ", out_channels)
+
+        # exit(0)
+
     def reset_parameters(self):
         self.weight_v2e.reset_parameters()
         self.weight_e2v.reset_parameters()
