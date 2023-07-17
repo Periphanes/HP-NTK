@@ -24,6 +24,7 @@ from torch_geometric.utils import softmax
 from torch_scatter import scatter_add, scatter
 from torch_geometric.typing import Adj, Size, OptTensor
 from typing import Optional
+from torch_sparse import SparseTensor
 
 # This part is for PMA.
 # Modified from GATConv in pyg.
@@ -190,7 +191,7 @@ class PMA(MessagePassing):
         """
 #         ipdb.set_trace()
         if aggr is None:
-            raise ValeuError("aggr was not passed!")
+            raise ValueError("aggr was not passed!")
         return scatter(inputs, index, dim=self.node_dim, reduce=aggr)
 
     def __repr__(self):
@@ -658,7 +659,7 @@ class HalfNLHconv(MessagePassing):
         """
 #         ipdb.set_trace()
         if aggr is None:
-            raise ValeuError("aggr was not passed!")
+            raise ValueError("aggr was not passed!")
         return scatter(inputs, index, dim=self.node_dim, reduce=aggr)
 
 
