@@ -16,6 +16,8 @@ from torch_geometric.data import InMemoryDataset
 
 from load_other_datasets import * 
 
+from sparsification.random_prune import prune_random
+
 
 def save_data_to_pickle(data, p2root = '../data/', file_name = None):
     '''
@@ -80,6 +82,8 @@ class dataset_Hypergraph(InMemoryDataset):
         self.data, self.slices = torch.load(self.processed_paths[0])
         # self.train_percent = self.data.train_percent.item()
         self.train_percent = self.data.train_percent
+
+        self.data = prune_random(self.data)
         
     # @property
     # def raw_dir(self):
