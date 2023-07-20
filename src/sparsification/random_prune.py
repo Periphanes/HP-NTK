@@ -28,29 +28,33 @@ def prune_random(data):
     random_indexes = torch.randperm(data.edge_index.shape[1])
     shuffled_edges = data.edge_index[:, random_indexes]
 
-    print(shuffled_edges.shape)
+    # print(shuffled_edges.shape)
 
     prune_percent = 0.05
 
     edge_index_count = data.edge_index.shape[1]
-    pruned_index_count = int(edge_index_count * (1 - prune_percent))
+    pruned_index_count = int(edge_index_count * prune_percent)
 
     prune_mask = torch.zeros((edge_index_count))
     prune_mask[pruned_index_count : ] = 1
 
-    for k in range(pruned_index_count, edge_index_count):
-        p = shuffled_edges[1] == shuffled_edges[0][k]
+    for k in range(pruned_index_count):
+        p = shuffled_edges[1] == shuffled_edges[0][k].item()
         p = p.nonzero()
+        p = [i.item() for i in p]
 
-        q = shuffled_edges[0] == shuffled_edges[1][k]
+        q = shuffled_edges[0] == shuffled_edges[1][k].item()
         q = q.nonzero()
+        q = [i.item() for i in q]
+
+        index = -1
 
         print(p)
         print(q)
         exit(1)
 
 
-    data.edge_index = shuffled_edges[:, :pruned_index_count]
+    data.edge_index = shuffled_edges[:, pruned_index_count:]
 
 
 
